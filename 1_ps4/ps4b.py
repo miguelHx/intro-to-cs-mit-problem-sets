@@ -112,9 +112,10 @@ class PlaintextMessage(Message):
 
         if pad:
             self.pad = pad.copy()
-            return
+        else:
+            self.pad = self.generate_pad()
 
-        self.pad = self.generate_pad()
+        self.ciphertext = self.apply_pad(self.pad)
 
     def __repr__(self):
         '''
@@ -172,6 +173,7 @@ class PlaintextMessage(Message):
         assert len(new_pad) == len(self.msg_text), "pad and message text lengths must be equal"
 
         self.pad = new_pad.copy()
+        self.ciphertext = self.apply_pad(self.pad)
 
 
 class EncryptedMessage(Message):
@@ -209,32 +211,4 @@ class EncryptedMessage(Message):
         for p in pad:
             dec_pad.append(-p)
             
-        return PlaintextMessage(self.apply_pad(dec_pad))
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return PlaintextMessage(self.apply_pad(dec_pad), pad)

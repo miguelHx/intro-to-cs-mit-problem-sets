@@ -80,28 +80,26 @@ def decrypt_message_try_pads(ciphertext, pads):
 
     Returns: (PlaintextMessage) A message with the decrypted ciphertext and the best pad
     '''
-    word_count_to_list_of_pads = {}
     
     words_list = load_words(WORDLIST_FILENAME)
     
+    max_count = 0
+    max_dec_msg = None
+    
     for p in pads:
-        dec_msg = ciphertext.decrypt_message(p).get_text()
-        dec_msg_words = dec_msg.split()
-        
+        dec_msg = ciphertext.decrypt_message(p)
+        dec_msg_words = dec_msg.get_text().split()
+
         count = 0
         for w in dec_msg_words:
             if is_word(words_list, w):
                 count += 1
         
-        if count in word_count_to_list_of_pads:
-            word_count_to_list_of_pads[count].append((p, dec_msg))
-        else:
-            word_count_to_list_of_pads[count] = [(p, dec_msg)]
+        if count >= max_count:
+            max_count = count
+            max_dec_msg = dec_msg
     
-    max_count = max(word_count_to_list_of_pads.keys())
-    found_pad, found_dec_msg = word_count_to_list_of_pads[max_count][-1]
-
-    return ps4b.PlaintextMessage(found_dec_msg, found_pad)
+    return max_dec_msg
 
 
 def decode_story():
