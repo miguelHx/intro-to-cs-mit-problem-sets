@@ -150,7 +150,7 @@ class PlaintextMessage(Message):
 
         Returns: (list of integers) a COPY of your pad
         '''
-        return self.pad
+        return self.pad.copy()
 
     def get_ciphertext(self):
         '''
