@@ -9,8 +9,8 @@ import numpy
 import pickle
 
 NUM_BITS = 8
-WHITE = 0
-BLACK = (2 ** NUM_BITS) - 1
+BLACK = 0
+WHITE = (2 ** NUM_BITS) - 1
 
 def make_matrix(color):
     """
@@ -181,9 +181,9 @@ def reveal_bw_image(filename):
     for px in img_pixels:
         single_lsb = extract_end_bits(1, px)
         if single_lsb == 1:
-            new_reveal_bw_pxs.append(BLACK)
-        else:
             new_reveal_bw_pxs.append(WHITE)
+        else:
+            new_reveal_bw_pxs.append(BLACK)
     
     return pix_to_img(new_reveal_bw_pxs, img_size, 'L')
 
